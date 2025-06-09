@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusTech - ПК та ноутбуки</title>
+    <!-- Bootstrap Dark CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --dark-primary: #0d6efd;
+            --dark-secondary: #1a1a1a;
+            --dark-accent: #2a2a2a;
+            --dark-text: #e0e0e0;
+            --dark-border: #333;
+        }
+        
+        body {
+            background-color: #121212;
+            color: var(--dark-text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background-color: var(--dark-secondary) !important;
+            border-bottom: 1px solid var(--dark-border);
+        }
+        
+        .card {
+            background-color: var(--dark-secondary);
+            border: 1px solid var(--dark-border);
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: #fff;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .product-card {
+            height: 100%;
+        }
+        
+        .category-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            height: 200px;
+        }
+        
+        .category-card img {
+            transition: transform 0.5s;
+        }
+
+        .category-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        .category-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 20px;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            margin-bottom: 40px;
+        }
+        
+        .btn-outline-light:hover {
+            color: #000 !important;
+        }
+        
+        .badge-discount {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #dc3545;
+            font-size: 0.8rem;
+        }
+        
+        .badge-new {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 0.8rem;
+        }
+        
+        .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        .footer {
+            background-color: var(--dark-secondary);
+            border-top: 1px solid var(--dark-border);
+            padding: 50px 0 20px;
+        }
+        
+        .form-control, .form-select {
+            background-color: var(--dark-accent);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background-color: var(--dark-accent);
+            color: var(--dark-text);
+            border-color: var(--dark-primary);
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        .dropdown-menu {
+            background-color: var(--dark-secondary);
+            border: 1px solid var(--dark-border);
+        }
+        
+        .dropdown-item {
+            color: var(--dark-text);
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--dark-primary);
+            color: white;
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--dark-text);
+            border-color: var(--dark-border);
+        }
+        
+        .nav-tabs .nav-link.active {
+            background-color: var(--dark-accent);
+            color: var(--dark-primary);
+            border-color: var(--dark-border);
+        }
+        
+        .specs-table td {
+            border-color: var(--dark-border);
+        }
+
+        /* Стили для модального окна корзины */
+.modal-content {
+    border: 1px solid var(--dark-border);
+}
+
+.table-dark {
+    --bs-table-bg: var(--dark-secondary);
+    --bs-table-striped-bg: var(--dark-accent);
+    --bs-table-hover-bg: #2c2c2c;
+    border-color: var(--dark-border);
+}
+
+/* Стили для кнопок изменения количества */
+.quantity-input {
+    background-color: var(--dark-accent);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+.quantity-input:focus {
+    background-color: var(--dark-accent);
+    color: var(--dark-text);
+    box-shadow: none;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal.fade .modal-dialog {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+    .modal-dialog {
+        margin: 0.5rem auto;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+    
+    .quantity-input {
+        width: 40px !important;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-pc-display-horizontal me-2"></i>NexusTech
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Головна</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="pcDropdown" role="button" data-bs-toggle="dropdown">
+                            ПК Сборки
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Геймерські ПК</a></li>
+                            <li><a class="dropdown-item" href="#">Робочі станції</a></li>
+                            <li><a class="dropdown-item" href="#">Бюджетні збірки</a></li>
+                            <li><a class="dropdown-item" href="#">Конфігуратор ПК</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="laptopDropdown" role="button" data-bs-toggle="dropdown">
+                            Ноутбуки
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Геймерські</a></li>
+                            <li><a class="dropdown-item" href="#">Для роботи</a></li>
+                            <li><a class="dropdown-item" href="#">Ультрабуки</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Комплектуючі</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Акції</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="input-group me-3">
+                        <input type="text" class="form-control" placeholder="Пошук...">
+                        <button class="btn btn-outline-light" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <a href="#" class="text-white me-3 position-relative">
+                        <i class="bi bi-heart fs-5"></i>
+                    </a>
+                    <a href="#" class="text-white me-3 position-relative">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                        </span>
+                    </a>
+                    <button class="btn btn-outline-light me-2">Увійти</button>
+                    <button class="btn btn-primary">Реєстрація</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Потужні ПК та ноутбуки</h1>
+                    <p class="lead mb-4">Збери свою ідеальну конфігурацію або обирай з готових рішень</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="btn btn-primary btn-lg px-4">Конфігуратор</a>
+                        <a href="#" class="btn btn-outline-light btn-lg px-4">Готові збірки</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        <!-- Categories -->
+        <h2 class="mb-4"><i class="bi bi-grid me-2"></i>Категорії</h2>
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="category-card">
+                    <img src="https://i.postimg.cc/t4rqtQSP/Category1.png" 
+                         alt="Геймерські ПК" class="img-fluid w-100 h-100 object-fit-cover">
+                    <div class="category-overlay">
+                        <h3 class="text-white">Геймерські ПК</h3>
+                        <a href="#" class="btn btn-sm btn-primary">Переглянути</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="category-card">
+                    <img src="https://i.postimg.cc/k5cxy4rs/Download-2-1.png" 
+                         alt="Ноутбуки" class="img-fluid w-100 h-100 object-fit-cover">
+                    <div class="category-overlay">
+                        <h3 class="text-white">Ноутбуки</h3>
+                        <a href="#" class="btn btn-sm btn-primary">Переглянути</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" 
+                         alt="Комплектуючі" class="img-fluid w-100 h-100 object-fit-cover">
+                    <div class="category-overlay">
+                        <h3 class="text-white">Комплектуючі</h3>
+                        <a href="#" class="btn btn-sm btn-primary">Переглянути</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Products -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="bi bi-stars me-2"></i>Ультимативні збіркии</h2>
+            <a href="#" class="btn btn-outline-light">Всі товари</a>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <!-- Product 1 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card product-card">
+                    <span class="badge-discount">-15%</span>
+                    <img src="https://i.postimg.cc/9FFsP4v8/Ultimatum1.png" 
+                         class="card-img-top" alt="Геймерський ПК">
+                    <div class="card-body">
+                        <h5 class="card-title">Nexus Blaze</h5>
+                        <div class="mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-half text-warning"></i>
+                            <span class="ms-1 text-muted">(24)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="price text-primary">32 499 ₴</span>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled small mb-3">
+                            <li><i class="bi bi-cpu me-1"></i> Intel Core i7-13700K</li>
+                            <li><i class="bi bi-gpu-card me-1"></i> RTX 4070 Ti 12GB</li>
+                            <li><i class="bi bi-memory me-1"></i> 32GB DDR5</li>
+                        </ul>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary"><i class="bi bi-cart-plus me-1"></i> В кошик</button>
+                            <a href="product-details-ulti-1.html" class="btn btn-outline-light">Детальніше</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 2 -->
+                        <div class="col-lg-3 col-md-6">
+                <div class="card product-card">
+                    <span class="badge-discount">-15%</span>
+                    <img src="https://i.postimg.cc/RZW88kCw/Ultimatum2.png" 
+                         class="card-img-top" alt="Геймерський ПК">
+                    <div class="card-body">
+                        <h5 class="card-title">Nexus Phantom</h5>
+                        <div class="mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-half text-warning"></i>
+                            <span class="ms-1 text-muted">(24)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="price text-primary">527 000 ₴</span>
+                                <span class="old-price ms-2">620 000 ₴</span>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled small mb-3">
+                            <li><i class="bi bi-cpu me-1"></i> Intel Core i9-14900KS</li>
+                            <li><i class="bi bi-gpu-card me-1"></i> RTX 5090 48GB</li>
+                            <li><i class="bi bi-memory me-1"></i> 192GB DDR5</li>
+                        </ul>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary"><i class="bi bi-cart-plus me-1"></i> В кошик</button>
+                            <a href="product-details-ulti-2.html" class="btn btn-outline-light">Детальніше</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 3 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card product-card">
+                    <img src="https://i.postimg.cc/pd8SVKFT/Ultimatum3.png" 
+                         class="card-img-top" alt="Робоча станція">
+                    <div class="card-body">
+                        <h5 class="card-title">Nexus Singularity</h5>
+                        <div class="mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <span class="ms-1 text-muted">(36)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="price text-primary">52 799 ₴</span>
+                        </div>
+                        <ul class="list-unstyled small mb-3">
+                            <li><i class="bi bi-cpu me-1"></i> AMD Threadripper PRO</li>
+                            <li><i class="bi bi-gpu-card me-1"></i> RTX 4080 Super 16GB</li>
+                            <li><i class="bi bi-memory me-1"></i> 64GB DDR4 ECC</li>
+                        </ul>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary"><i class="bi bi-cart-plus me-1"></i> В кошик</button>
+                            <a href="product-details-ulti-3.html" class="btn btn-outline-light">Детальніше</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 4 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card product-card">
+                    <span class="badge-discount">-10%</span>
+                    <img src="https://i.postimg.cc/0Q0HDxZ1/Ultimatum4.png" 
+                         class="card-img-top" alt="Бюджетний ПК">
+                    <div class="card-body">
+                        <h5 class="card-title">Nexus Storm</h5>
+                        <div class="mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-half text-warning"></i>
+                            <i class="bi bi-star text-warning"></i>
+                            <span class="ms-1 text-muted">(18)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="price text-primary">18 999 ₴</span>
+                                <span class="old-price ms-2">21 199 ₴</span>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled small mb-3">
+                            <li><i class="bi bi-cpu me-1"></i> AMD Ryzen 6 6600X</li>
+                            <li><i class="bi bi-gpu-card me-1"></i> RTX 3060 12GB</li>
+                            <li><i class="bi bi-memory me-1"></i> 16GB DDR5</li>
+                        </ul>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary"><i class="bi bi-cart-plus me-1"></i> В кошик</button>
+                            <a href="product-details-ulti-4.html" class="btn btn-outline-light">Детальніше</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PC Builder -->
+        <div class="card mb-5">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="mb-3"><i class="bi bi-tools me-2"></i>Конфігуратор ПК</h2>
+                        <p class="lead">Збери свій ідеальний комп'ютер з нуля. Обирай комплектуючі, а ми зберемо та протестуємо систему перед відправкою.</p>
+                        <a href="#" class="btn btn-primary btn-lg">Почати збірку</a>
+                    </div>
+                    <div class="col-md-4 d-none d-md-block">
+                        <img src="https://i.postimg.cc/nLgngKth/Konfigurator-Section.png" 
+                             alt="Конфігуратор ПК" class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="bi bi-stars me-2"></i>Рекомендовані товари</h2>
+            <a href="#" class="btn btn-outline-light">Всі товари</a>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <!-- Product 1 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card product-card">
+                    <span class="badge-discount">-15%</span>
+                    <img src="https://i.postimg.cc/PJzhCBvC/Recommended1.png" 
+                         class="card-img-top" alt="Геймерський ПК">
+                    <div class="card-body">
+                        <h5 class="card-title">Nexus Pro Gamer</h5>
+                        <div class="mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-half text-warning"></i>
+                            <span class="ms-1 text-muted">(24)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="price text-primary">32 499 ₴</span>
+                                <span class="old-price ms-2">38 299 ₴</span>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled small mb-3">
+                            <li><i class="bi bi-cpu me-1"></i> Intel Core i7-13700K</li>
+                            <li><i class="bi bi-gpu-card me-1"></i> RTX 4070 Ti 12GB</li>
+                            <li><i class="bi bi-memory me-1"></i> 32GB DDR5</li>
+                        </ul>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary"><i class="bi bi-cart-plus me-1"></i> В кошик</button>
+                            <button class="btn btn-outline-light">Детальніше</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 2 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card product-card">
+                    <span class="badge-new">Новинка</span>
+                    <img src="https://i.postimg.cc/zv5YY028/Recommended2.png" 
+                         class="card-img-top" alt="Ноутбук">
+                    <div class="card-body">
+                        <h5 class="card-title">Asus TUF Gaming F15</h5>
+                        <div class="mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star text-warning"></i>
+                            <span class="ms-1 text-muted">(12)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="price text-primary">35 999 ₴</span>
+                        </div>
+                        <ul class="list-unstyled small mb-3">
+                            <li><i class="bi bi-cpu me-1"></i> Intel Core i5-11400F</li>
+                            <li><i class="bi bi-gpu-card me-1"></i> RTX 3050 4GB</li>
+                            <li><i class="bi bi-memory me-1"></i> 16GB DDR6</li>
+                        </ul>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary"><i class="bi bi-cart-plus me-1"></i> В кошик</button>
+                            <button class="btn btn-outline-light">Детальніше</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 3 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card product-card">
+                    <img src="https://i.postimg.cc/3xW5hy14/Recommended3.jpg" 
+                         class="card-img-top" alt="Робоча станція">
+                    <div class="card-body">
+                        <h5 class="card-title">Nexus WorkStation</h5>
+                        <div class="mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <span class="ms-1 text-muted">(36)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="price text-primary">52 799 ₴</span>
+                        </div>
+                        <ul class="list-unstyled small mb-3">
+                            <li><i class="bi bi-cpu me-1"></i> AMD Threadripper PRO</li>
+                            <li><i class="bi bi-gpu-card me-1"></i> RTX 4080 16GB</li>
+                            <li><i class="bi bi-memory me-1"></i> 64GB DDR4 ECC</li>
+                        </ul>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary"><i class="bi bi-cart-plus me-1"></i> В кошик</button>
+                            <button class="btn btn-outline-light">Детальніше</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 4 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card product-card">
+                    <span class="badge-discount">-10%</span>
+                    <img src="https://i.postimg.cc/HxwFzbYK/Recommended4.png" 
+                         class="card-img-top" alt="Бюджетний ПК">
+                    <div class="card-body">
+                        <h5 class="card-title">Nexus Basic</h5>
+                        <div class="mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-half text-warning"></i>
+                            <i class="bi bi-star text-warning"></i>
+                            <span class="ms-1 text-muted">(18)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="price text-primary">18 999 ₴</span>
+                                <span class="old-price ms-2">21 199 ₴</span>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled small mb-3">
+                            <li><i class="bi bi-cpu me-1"></i> AMD Ryzen 5 5600X</li>
+                            <li><i class="bi bi-gpu-card me-1"></i> RTX 3060 12GB</li>
+                            <li><i class="bi bi-memory me-1"></i> 16GB DDR4</li>
+                        </ul>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary"><i class="bi bi-cart-plus me-1"></i> В кошик</button>
+                            <button class="btn btn-outline-light">Детальніше</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Why Choose Us -->
+        <h2 class="mb-4"><i class="bi bi-patch-check me-2"></i>Чому обирають нас?</h2>
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-shield-check text-primary fs-1 mb-3"></i>
+                        <h5>Гарантія якості</h5>
+                        <p>Всі товари проходять ретельне тестування перед відправкою</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-truck text-primary fs-1 mb-3"></i>
+                        <h5>Швидка доставка</h5>
+                        <p>Доставка по всій Україні за 1-3 дні</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-arrow-repeat text-primary fs-1 mb-3"></i>
+                        <h5>Легкий повернення</h5>
+                        <p>14 днів на тестування та повернення товару</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-headset text-primary fs-1 mb-3"></i>
+                        <h5>Підтримка 24/7</h5>
+                        <p>Наші фахівці завжди готові допомогти</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase">NexusTech</h5>
+                    <p>Інтернет-магазин потужних ПК збірок та ноутбуків. Якість, надійність, гарантія.</p>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-2"><i class="bi bi-facebook fs-5"></i></a>
+                        <a href="#" class="text-white me-2"><i class="bi bi-instagram fs-5"></i></a>
+                        <a href="#" class="text-white me-2"><i class="bi bi-telegram fs-5"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-youtube fs-5"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase">Покупцям</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Доставка та оплата</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Гарантія</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Повернення товару</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Кредит та розстрочка</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Блог</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase">Каталог</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Геймерські ПК</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Робочі станції</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Геймерські ноутбуки</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Ультрабуки</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Комплектуючі</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase">Контакти</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-geo-alt me-2"></i> м. Київ, вул. Технологічна, 42</li>
+                        <li><i class="bi bi-telephone me-2"></i> 0 800 123 456</li>
+                        <li><i class="bi bi-envelope me-2"></i> info@nexustech.ua</li>
+                        <li><i class="bi bi-clock me-2"></i> Пн-Пт: 9:00 - 19:00</li>
+                    </ul>
+                    <h5 class="text-uppercase mt-4">Розсилка</h5>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Ваш email">
+                        <button class="btn btn-primary" type="button">Підписатися</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2023 NexusTech. Усі права захищені.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white text-decoration-none me-3">Політика конфіденційності</a>
+                    <a href="#" class="text-white text-decoration-none">Умови використання</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно корзины -->
+<div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title"><i class="bi bi-cart3 me-2"></i>Кошик</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="cartEmptyMessage" class="text-center py-4">
+          <i class="bi bi-cart-x fs-1 text-muted"></i>
+          <p class="mt-3">Ваш кошик порожній</p>
+          <a href="#" class="btn btn-primary" data-bs-dismiss="modal">Продовжити покупки</a>
+        </div>
+        <div id="cartContent" style="display: none;">
+          <div class="table-responsive">
+            <table class="table table-dark table-hover">
+              <thead>
+                <tr>
+                  <th>Товар</th>
+                  <th>Ціна</th>
+                  <th>Кількість</th>
+                  <th>Сума</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="cartItems">
+                <!-- Товары будут добавляться сюда -->
+              </tbody>
+              <tfoot class="table-group-divider">
+                <tr>
+                  <td colspan="3" class="text-end fw-bold">Всього:</td>
+                  <td id="cartTotal" class="fw-bold text-primary">0 ₴</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-secondary">
+        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Продовжити покупки</button>
+        <button id="checkoutBtn" type="button" class="btn btn-primary">Оформити замовлення</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Модальное окно оформления заказа с платежной формой -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title"><i class="bi bi-credit-card me-2"></i>Оформлення замовлення</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="checkoutForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">ПІБ</label>
+            <input type="text" class="form-control" id="name" required>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Телефон</label>
+            <input type="tel" class="form-control" id="phone" required>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Адреса доставки</label>
+            <textarea class="form-control" id="address" rows="2" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="payment" class="form-label">Спосіб оплати</label>
+            <select class="form-select" id="payment" required>
+              <option value="" selected disabled>Оберіть спосіб оплати</option>
+              <option value="cash">Накладений платіж (у розробці, не працює)</option>
+              <option value="card">Оплата карткою онлайн</option>
+              <option value="privat">Оплата через Приват24 (у розробці, не працює)</option>
+            </select>
+          </div>
+                    <div id="cardPaymentForm" style="display: none;">
+            <div class="mb-3">
+              <label for="cardNumber" class="form-label">Номер картки</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
+              </div>
+              <div class="card-icons mt-2">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" width="30" class="me-2">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" width="30">
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="cardExpiry" class="form-label">Термін дії</label>
+                <input type="text" class="form-control" id="cardExpiry" placeholder="ММ/РР" maxlength="5">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="cardCvv" class="form-label">CVV/CVC</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="cardCvv" placeholder="•••" maxlength="3">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="saveCard">
+              <label class="form-check-label" for="saveCard">Зберегти картку для наступних покупок</label>
+            </div>
+          </div>
+          
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="agree" required>
+            <label class="form-check-label" for="agree">Я погоджуюсь з умовами покупки</label>
+          </div>
+        </form>
+        
+        <!-- Блок для чека (изначально скрыт) -->
+        <div id="receipt" style="display: none;">
+          <div class="text-center mb-4">
+            <i class="bi bi-check-circle-fill text-success fs-1"></i>
+            <h4 class="mt-3">Оплата успішна!</h4>
+          </div>
+          
+          <div class="card bg-dark border-secondary mb-3">
+            <div class="card-header">
+              <h5 class="mb-0">Чек #<span id="receiptNumber"></span></h5>
+              <small class="text-muted"><span id="receiptDate"></span></small>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between mb-2">
+                <span>Сума:</span>
+                <strong><span id="receiptAmount"></span> ₴</strong>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Спосіб оплати:</span>
+                <span id="receiptMethod"></span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Картка:</span>
+                <span id="receiptCard"></span>
+              </div>
+              <hr class="my-2">
+              <div class="d-flex justify-content-between fw-bold">
+                <span>Всього:</span>
+                <strong><span id="receiptTotal"></span> ₴</strong>
+              </div>
+            </div>
+            <div class="card-footer text-muted">
+              <small>Дякуємо за покупку! Чек буде відправлено на email.</small>
+            </div>
+          </div>
+          
+          <div class="text-center">
+            <button id="printReceipt" class="btn btn-outline-light me-2">
+              <i class="bi bi-printer"></i> Друк
+            </button>
+            <button id="sendReceipt" class="btn btn-outline-light">
+              <i class="bi bi-envelope"></i> Надіслати
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-secondary">
+        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Скасувати</button>
+        <button type="button" id="backToForm" class="btn btn-outline-light" style="display: none;">
+          <i class="bi bi-arrow-left"></i> Назад
+        </button>
+        <button type="submit" form="checkoutForm" class="btn btn-primary" id="confirmOrderBtn">
+          Підтвердити замовлення
+        </button>
+        <button type="button" id="finishBtn" class="btn btn-success" style="display: none;">
+          Завершити
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <script>
+    // Объект корзины
+    const cart = {
+        items: [],
+        total: 0,
+        count: 0,
+        
+        // Инициализация корзины
+        init() {
+            this.loadFromStorage();
+            this.updateCartIcon();
+            this.setupEventListeners();
+        },
+        
+        // Загрузка из localStorage
+        loadFromStorage() {
+            const savedCart = localStorage.getItem('nexustechCart');
+            if (savedCart) {
+                const parsedCart = JSON.parse(savedCart);
+                this.items = parsedCart.items || [];
+                this.total = parsedCart.total || 0;
+                this.count = parsedCart.count || 0;
+            }
+        },
+        
+        // Сохранение в localStorage
+        saveToStorage() {
+            localStorage.setItem('nexustechCart', JSON.stringify({
+                items: this.items,
+                total: this.total,
+                count: this.count
+            }));
+        },
+        
+        // Добавление товара
+        addItem(product) {
+            // Проверяем, есть ли уже такой товар в корзине
+            const existingItem = this.items.find(item => item.id === product.id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                this.items.push({
+                    ...product,
+                    id: product.id || Date.now().toString(),
+                    quantity: 1
+                });
+            }
+            
+            this.calculateTotal();
+            this.saveToStorage();
+            this.updateCartIcon();
+            this.showSuccessMessage(product.name);
+            this.updateCartModal();
+        },
+        
+        // Удаление товара
+        removeItem(itemId) {
+            const itemIndex = this.items.findIndex(item => item.id === itemId);
+            if (itemIndex !== -1) {
+                this.items.splice(itemIndex, 1);
+                this.calculateTotal();
+                this.saveToStorage();
+                this.updateCartIcon();
+                this.updateCartModal();
+            }
+        },
+        
+        // Изменение количества
+        updateQuantity(itemId, newQuantity) {
+            const item = this.items.find(item => item.id === itemId);
+            if (item && newQuantity > 0) {
+                item.quantity = newQuantity;
+                this.calculateTotal();
+                this.saveToStorage();
+                this.updateCartIcon();
+                this.updateCartModal();
+            }
+        },
+        
+        // Пересчет общей суммы
+        calculateTotal() {
+            this.total = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            this.count = this.items.reduce((sum, item) => sum + item.quantity, 0);
+        },
+        
+        // Очистка корзины
+        clearCart() {
+            this.items = [];
+            this.total = 0;
+            this.count = 0;
+            this.saveToStorage();
+            this.updateCartIcon();
+            this.updateCartModal();
+        },
+        
+        // Обновление иконки корзины
+        updateCartIcon() {
+            const cartIcon = document.querySelector('.bi-cart3').parentElement;
+            const badge = cartIcon.querySelector('.badge');
+            
+            if (this.count > 0) {
+                badge.textContent = this.count;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
+        },
+        
+        // Показ сообщения об успешном добавлении
+        showSuccessMessage(productName) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success position-fixed top-0 end-0 m-3';
+            alertDiv.style.zIndex = '1100';
+            alertDiv.style.minWidth = '300px';
+            alertDiv.setAttribute('role', 'alert');
+            alertDiv.innerHTML = `
+                <i class="bi bi-check-circle-fill me-2"></i>
+                Товар "${productName}" додано до кошика!
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.classList.add('fade');
+                setTimeout(() => alertDiv.remove(), 300);
+            }, 3000);
+        },
+        
+        // Обновление модального окна корзины
+        updateCartModal() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotalElement = document.getElementById('cartTotal');
+            const cartEmptyMessage = document.getElementById('cartEmptyMessage');
+            const cartContent = document.getElementById('cartContent');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            
+            if (this.items.length === 0) {
+                cartEmptyMessage.style.display = 'block';
+                cartContent.style.display = 'none';
+                checkoutBtn.disabled = true;
+            } else {
+                cartEmptyMessage.style.display = 'none';
+                cartContent.style.display = 'block';
+                checkoutBtn.disabled = false;
+                
+                // Очищаем содержимое
+                cartItemsContainer.innerHTML = '';
+                
+                // Добавляем товары
+                this.items.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: contain;" class="me-3">
+                                <div>
+                                    <h6 class="mb-0">${item.name}</h6>
+                                    <small class="text-muted">${item.specs.join(', ')}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="align-middle">${item.price.toFixed(2)} ₴</td>
+                        <td class="align-middle">
+                            <div class="input-group input-group-sm" style="width: 100px;">
+                                <button class="btn btn-outline-secondary minus-btn" type="button" data-id="${item.id}">-</button>
+                                <input type="number" class="form-control text-center quantity-input" value="${item.quantity}" min="1" data-id="${item.id}">
+                                <button class="btn btn-outline-secondary plus-btn" type="button" data-id="${item.id}">+</button>
+                            </div>
+                        </td>
+                        <td class="align-middle">${itemTotal.toFixed(2)} ₴</td>
+                        <td class="align-middle text-end">
+                            <button class="btn btn-sm btn-outline-danger remove-btn" data-id="${item.id}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    cartItemsContainer.appendChild(row);
+                });
+                
+                // Обновляем итоговую сумму
+                cartTotalElement.textContent = `${this.total.toFixed(2)} ₴`;
+            }
+        },
+        
+        // Настройка обработчиков событий
+        setupEventListeners() {
+            // Открытие корзины при клике на иконку
+            document.querySelector('.bi-cart3').closest('a').addEventListener('click', (e) => {
+                e.preventDefault();
+                this.updateCartModal();
+                const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+                cartModal.show();
+            });
+            
+            // Обработчики для кнопок "В кошик"
+            document.querySelectorAll('.btn-primary').forEach(button => {
+                if (button.textContent.includes('В кошик')) {
+                    button.addEventListener('click', function() {
+                        const card = this.closest('.card');
+                        const product = {
+                            id: card.querySelector('.card-title').textContent.trim(),
+                            name: card.querySelector('.card-title').textContent.trim(),
+                            price: parseFloat(card.querySelector('.price').textContent.replace('₴', '').replace(/\s/g, '')),
+                            image: card.querySelector('.card-img-top').src,
+                            specs: Array.from(card.querySelectorAll('li')).map(li => li.textContent.trim())
+                        };
+                        
+                        cart.addItem(product);
+                    });
+                }
+            });
+            
+            // Динамические обработчики для корзины (делегирование событий)
+            document.addEventListener('click', (e) => {
+                // Удаление товара
+                if (e.target.closest('.remove-btn')) {
+                    const itemId = e.target.closest('.remove-btn').dataset.id;
+                    this.removeItem(itemId);
+                }
+                
+                // Уменьшение количества
+                if (e.target.closest('.minus-btn')) {
+                    const itemId = e.target.closest('.minus-btn').dataset.id;
+                    const item = this.items.find(item => item.id === itemId);
+                    if (item && item.quantity > 1) {
+                        this.updateQuantity(itemId, item.quantity - 1);
+                    }
+                }
+                
+                // Увеличение количества
+                if (e.target.closest('.plus-btn')) {
+                    const itemId = e.target.closest('.plus-btn').dataset.id;
+                    const item = this.items.find(item => item.id === itemId);
+                    if (item) {
+                        this.updateQuantity(itemId, item.quantity + 1);
+                    }
+                }
+            });
+            
+            // Изменение количества через input
+            document.addEventListener('change', (e) => {
+                if (e.target.classList.contains('quantity-input')) {
+                    const itemId = e.target.dataset.id;
+                    const newQuantity = parseInt(e.target.value);
+                    if (newQuantity > 0) {
+                        this.updateQuantity(itemId, newQuantity);
+                    } else {
+                        e.target.value = 1;
+                    }
+                }
+            });
+            
+            // Оформление заказа
+            document.getElementById('checkoutBtn').addEventListener('click', () => {
+                const cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
+                cartModal.hide();
+                
+                const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
+                checkoutModal.show();
+                
+                // Сбрасываем форму при каждом открытии
+                document.getElementById('checkoutForm').reset();
+                document.getElementById('receipt').style.display = 'none';
+                document.getElementById('checkoutForm').style.display = 'block';
+                document.getElementById('cardPaymentForm').style.display = 'none';
+                document.getElementById('confirmOrderBtn').style.display = 'block';
+                document.getElementById('backToForm').style.display = 'none';
+                document.getElementById('finishBtn').style.display = 'none';
+            });
+            
+            // Изменение способа оплаты
+            document.getElementById('payment').addEventListener('change', function() {
+                const cardPaymentForm = document.getElementById('cardPaymentForm');
+                if (this.value === 'card') {
+                    cardPaymentForm.style.display = 'block';
+                } else {
+                    cardPaymentForm.style.display = 'none';
+                }
+            });
+            
+            // Форматирование номера карты
+            document.getElementById('cardNumber').addEventListener('input', function(e) {
+                let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formatted = '';
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) formatted += ' ';
+                    formatted += value[i];
+                }
+                this.value = formatted.substring(0, 19);
+            });
+            
+            // Форматирование срока действия карты
+            document.getElementById('cardExpiry').addEventListener('input', function(e) {
+                let value = this.value.replace(/\D/g, '');
+                if (value.length > 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                this.value = value.substring(0, 5);
+            });
+            
+            // Ограничение CVV
+            document.getElementById('cardCvv').addEventListener('input', function(e) {
+                this.value = this.value.replace(/\D/g, '').substring(0, 3);
+            });
+            
+            // Отправка формы заказа
+            document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Проверка данных карты, если выбран этот способ оплаты
+                const paymentMethod = document.getElementById('payment').value;
+                if (paymentMethod === 'card') {
+                    if (!this.validateCardForm()) {
+                        return;
+                    }
+                }
+                
+                // Здесь можно добавить отправку данных на сервер
+                const formData = {
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    address: document.getElementById('address').value,
+                    payment: paymentMethod,
+                    items: this.items,
+                    total: this.total
+                };
+                
+                // Для демонстрации просто логируем данные
+                console.log('Order submitted:', formData);
+                
+                // Если оплата картой - показываем процесс оплаты
+                if (paymentMethod === 'card') {
+                    this.showPaymentProcessing();
+                    
+                    // Имитация обработки платежа
+                    setTimeout(() => {
+                        this.showReceipt(formData);
+                    }, 2000);
+                } else {
+                    // Для других способов оплаты сразу показываем успех
+                    this.showOrderSuccess();
+                    this.clearCart();
+                    
+                    const checkoutModal = bootstrap.Modal.getInstance(document.getElementById('checkoutModal'));
+                    checkoutModal.hide();
+                }
+            });
+            
+            // Кнопка "Назад" в чеке
+            document.getElementById('backToForm').addEventListener('click', () => {
+                document.getElementById('receipt').style.display = 'none';
+                document.getElementById('checkoutForm').style.display = 'block';
+                document.getElementById('confirmOrderBtn').style.display = 'block';
+                document.getElementById('backToForm').style.display = 'none';
+                document.getElementById('finishBtn').style.display = 'none';
+            });
+            
+            // Кнопка "Завершити" в чеке
+            document.getElementById('finishBtn').addEventListener('click', () => {
+                this.showOrderSuccess();
+                this.clearCart();
+                
+                const checkoutModal = bootstrap.Modal.getInstance(document.getElementById('checkoutModal'));
+                checkoutModal.hide();
+            });
+            
+            // Кнопка "Друк" в чеке
+            document.getElementById('printReceipt').addEventListener('click', () => {
+                window.print();
+            });
+            
+            // Кнопка "Надіслати" в чеке
+            document.getElementById('sendReceipt').addEventListener('click', () => {
+                alert('Чек буде надіслано на вашу електронну адресу.');
+            });
+        },
+        
+        // Валидация данных карты
+        validateCardForm() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const cardExpiry = document.getElementById('cardExpiry').value;
+            const cardCvv = document.getElementById('cardCvv').value;
+            
+            if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
+                this.showPaymentError('Будь ласка, введіть коректний номер картки');
+                return false;
+            }
+            
+            if (!cardExpiry || !/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+                this.showPaymentError('Будь ласка, введіть коректний термін дії картки (ММ/РР)');
+                return false;
+            }
+            
+            if (cardCvv.length !== 3 || !/^\d+$/.test(cardCvv)) {
+                this.showPaymentError('Будь ласка, введіть коректний CVV/CVC код');
+                return false;
+            }
+            
+            return true;
+        },
+        
+        // Показ ошибки оплаты
+        showPaymentError(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-danger position-fixed top-0 start-50 translate-middle-x mt-3';
+            alertDiv.style.zIndex = '1100';
+            alertDiv.setAttribute('role', 'alert');
+            alertDiv.innerHTML = `
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.classList.add('fade');
+                setTimeout(() => alertDiv.remove(), 300);
+            }, 3000);
+        },
+        
+        // Показ процесса оплаты
+        showPaymentProcessing() {
+            document.getElementById('confirmOrderBtn').disabled = true;
+            document.getElementById('confirmOrderBtn').innerHTML = `
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Обробка оплати...
+            `;
+        },
+        
+        // Показ чека
+        showReceipt(formData) {
+            document.getElementById('checkoutForm').style.display = 'none';
+            document.getElementById('receipt').style.display = 'block';
+            document.getElementById('confirmOrderBtn').style.display = 'none';
+            document.getElementById('backToForm').style.display = 'block';
+            document.getElementById('finishBtn').style.display = 'block';
+            
+            // Заполняем данные чека
+            document.getElementById('receiptNumber').textContent = Math.floor(Math.random() * 1000000);
+            document.getElementById('receiptDate').textContent = new Date().toLocaleString('uk-UA');
+            document.getElementById('receiptAmount').textContent = this.total.toFixed(2);
+            document.getElementById('receiptTotal').textContent = this.total.toFixed(2);
+            document.getElementById('receiptMethod').textContent = 
+                formData.payment === 'card' ? 'Картка онлайн' : 
+                formData.payment === 'privat' ? 'Приват24' : 'Накладений платіж';
+            
+            // Маскируем номер карты для чека
+            if (formData.payment === 'card') {
+                const cardNumber = document.getElementById('cardNumber').value;
+                const maskedNumber = '•••• •••• •••• ' + cardNumber.slice(-4);
+                document.getElementById('receiptCard').textContent = maskedNumber;
+            } else {
+                document.getElementById('receiptCard').textContent = 'Не застосовується';
+            }
+            
+            // Восстанавливаем кнопку подтверждения
+            document.getElementById('confirmOrderBtn').disabled = false;
+            document.getElementById('confirmOrderBtn').innerHTML = 'Підтвердити замовлення';
+        },
+
+        };
+        document.addEventListener('DOMContentLoaded', () => {
+        cart.init();
+    });
+</script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
